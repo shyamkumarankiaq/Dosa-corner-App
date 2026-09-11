@@ -1,0 +1,21 @@
+
+Jenkins Fundamentals Lab Assessment
+
+Project: Jenkins CI/CD Integration
+
+This file is created for Jenkins Git integration testing.
+
+CI/CD Flow:
+GitHub -> Jenkins -> Build
+
+Source Control:
+Git and GitHub
+
+Automation Server:
+Jenkins
+
+Build Status:
+Testing Jenkins Git integration
+
+Message:
+Hello from GitHub to Jenkins!
