@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Hello World') {
             steps {
                 echo 'Hello World from Jenkins Pipeline!'
@@ -10,12 +11,21 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'echo "Build completed successfully"'
+                echo 'Starting Build...'
+                sh 'echo "Build completed successfully - Poll SCM Test"'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running Tests...'
+                sh 'echo "All tests passed successfully"'
             }
         }
 
         stage('Create Artifact') {
             steps {
+                echo 'Creating Build Artifact...'
                 sh 'echo "Jenkins artifact created successfully" > build-artifact.txt'
             }
         }
@@ -25,6 +35,10 @@ pipeline {
         success {
             archiveArtifacts artifacts: 'build-artifact.txt', fingerprint: true
             echo 'Pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
