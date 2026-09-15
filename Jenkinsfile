@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'linux-agent'
+        label 'built-in'
     }
 
     stages {
