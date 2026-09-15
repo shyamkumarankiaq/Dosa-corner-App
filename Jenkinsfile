@@ -1,49 +1,35 @@
 pipeline {
-    agent {
-        label 'built-in'
-    }
-
+    agent { label 'built-in' }
     stages {
-
-        stage('Hello World') {
+        stage('Validate') {
             steps {
-                echo 'Hello World from Jenkins Pipeline!'
+                sh """
+                    set -e
+                    test -f index.html
+                    test -f styles.css
+                    test -f app.js
+                    test -f dishes.js
+                    test -f hero.png
+                    grep -q '"id":245' dishes.js
+                    echo 'DosaCorner validation passed - 245 dishes.'
+                """
             }
         }
-
-        stage('Build') {
+        stage('Package') {
             steps {
-                echo 'Starting Build...'
-                sh 'echo "Build completed successfully - Poll SCM Test"'
+                sh 'rm -rf deploy && mkdir deploy && cp index.html styles.css app.js dishes.js hero.png deploy/ && echo "Package created successfully."'
             }
         }
-
-        stage('Test') {
+        stage('Deploy') {
             steps {
-                echo 'Running Tests...'
-                sh 'echo "All tests passed successfully"'
-            }
-        }
-
-        stage('Create Artifact') {
-            steps {
-                echo 'Creating Build Artifact...'
-                sh 'echo "Jenkins artifact created successfully" > build-artifact.txt'
+                sh 'mkdir -p "$HOME/dosacorner-site" && rm -rf "$HOME/dosacorner-site"/* && cp -r deploy/. "$HOME/dosacorner-site/" && echo "Deployed to $HOME/dosacorner-site"'
             }
         }
     }
-
     post {
         success {
-            archiveArtifacts artifacts: 'build-artifact.txt', fingerprint: true
-            echo 'Pipeline completed successfully!'
-        }
-
-        failure {
-            echo 'Pipeline failed!'
+            archiveArtifacts artifacts: 'deploy/*', fingerprint: true
+            echo 'DosaCorner deployment completed successfully!'
         }
     }
 }
-
-
-// GitHub Webhook Test
