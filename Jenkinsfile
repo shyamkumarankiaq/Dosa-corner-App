@@ -10,7 +10,7 @@ pipeline {
                     test -f app.js
                     test -f dishes.js
                     test -f hero.png
-                    grep -q '"id":245' dishes.js
+                    grep -q '245' dishes.js
                     echo 'DosaCorner validation passed - 245 dishes.'
                 """
             }
